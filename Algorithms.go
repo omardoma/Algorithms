@@ -43,13 +43,10 @@ func linearSearch(key int, arr []int) int {
 
 func binarySearch(key int, arr []int) int {
 	var min, max, mid = 0, len(arr), 0
-	for {
+	for max >= min {
 		mid = (max + min) / 2
 		if arr[mid] == key {
 			return mid
-		}
-		if max <= min {
-			return -1
 		}
 		if arr[mid] < key {
 			min = mid + 1
@@ -57,6 +54,7 @@ func binarySearch(key int, arr []int) int {
 			max = mid - 1
 		}
 	}
+	return -1
 }
 
 func bubbleSort(arr []int) {

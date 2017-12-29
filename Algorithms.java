@@ -48,13 +48,10 @@ public class Algorithms {
     public static int binarySearch(int key, int[] arr) {
         int min = 0, mid = 0;
         int max = arr.length;
-        while (true) {
+        while (max >= min) {
             mid = (max + min) / 2;
             if (arr[mid] == key) {
                 return mid;
-            }
-            if (max <= min) {
-                return -1;
             }
             if (arr[mid] < key) {
                 min = mid + 1;
@@ -62,6 +59,7 @@ public class Algorithms {
                 max = mid - 1;
             }
         }
+        return -1;
     }
 
     public static void bubbleSort(int[] arr) {
