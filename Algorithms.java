@@ -1,11 +1,12 @@
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class Algorithms {
 
     public static void elapsed(long start, String what) {
         long end = System.currentTimeMillis();
-        DecimalFormat df = new DecimalFormat("#0.00000");
-        System.out.printf("%s took %s\n", what, df.format(((end - start) / 1000d)) + "ms");
+        DecimalFormat df = new DecimalFormat("#0.000");
+        System.out.printf("%s took %s\n", what, df.format(((end - start) / 1d)) + "ms");
     }
 
     public static String printArray(int[] arr) {
@@ -140,10 +141,44 @@ public class Algorithms {
         }
     }
 
+    public static int fibonacci(int n) {
+        int[] fib = new int[n+1];
+        fib[0] = 0;
+        fib[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            fib[i] = fib[i - 1] + fib[i - 2];
+        }
+        return fib[n];
+    }
+
+    public static int fibonacciRec(int n) {
+        if(n == 0 || n == 1) {
+            return n;
+        }
+        return fibonacciRec(n-1) + fibonacciRec(n-2);
+    }
+
+    public static int fibonacciMemoHelper(int n, int[] memo) {
+        if (n == 0 || n == 1) {
+            return n;
+        }
+        if(memo[n-1] != -1) {
+            return memo[n-1];
+        }
+        return memo[n-1] = fibonacciMemoHelper(n - 1, memo) + fibonacciMemoHelper(n - 2, memo);
+    }
+
+    public static int fibonacciMemo(int n) {
+        int[] memo = new int[n];
+        Arrays.fill(memo, -1);
+        return fibonacciMemoHelper(n, memo);
+    }
+
     public static void main(String[] args) {
         int[] arr;
         String str;
         long start;
+        int n;
 
         arr = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
         System.out.println("Sorted Array: " + printArray(arr));
@@ -198,6 +233,22 @@ public class Algorithms {
         start = System.currentTimeMillis();
         System.out.println(str + ": " + isPalindrome(str));
         elapsed(start, "Palindrome String");
+
+        n = 15;
+        System.out.println("\nFibonacci");
+        start = System.currentTimeMillis();
+        System.out.println("Fibonacci of " + n + ": " + fibonacci(n));
+        elapsed(start, "Fibonacci");
+
+        System.out.println("\nRecursive Fibonacci");
+        start = System.currentTimeMillis();
+        System.out.println("Fibonacci of " + n + ": " + fibonacciRec(n));
+        elapsed(start, "Recursive Fibonacci");
+
+        System.out.println("\nMemoized Fibonacci");
+        start = System.currentTimeMillis();
+        System.out.println("Fibonacci of " + n + ": " + fibonacciMemo(n));
+        elapsed(start, "Memoized Fibonacci");
     }
 
 }

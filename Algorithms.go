@@ -135,10 +135,47 @@ func insertionSort(arr []int) {
 	}
 }
 
+func fibonacci(n int) int {
+	fib := make([]int, n+1)
+	fib[0] = 0
+	fib[1] = 1
+	for i := 2; i <= n; i++ {
+		fib[i] = fib[i-1] + fib[i-2]
+	}
+	return fib[n]
+}
+
+func fibonacciRec(n int) int {
+	if n == 0 || n == 1 {
+		return n
+	}
+	return fibonacciRec(n-1) + fibonacciRec(n-2)
+}
+
+func fibonacciMemoHelper(n int, memo []int) int {
+	if n == 0 || n == 1 {
+		return n
+	}
+	if memo[n-1] != -1 {
+		return memo[n-1]
+	}
+	memo[n-1] = fibonacciMemoHelper(n-1, memo) + fibonacciMemoHelper(n-2, memo)
+	return memo[n-1]
+}
+
+func fibonacciMemo(n int) int {
+	memo := make([]int, n)
+	for i := range memo {
+		memo[i] = -1
+	}
+	return fibonacciMemoHelper(n, memo)
+}
+
 func main() {
 	var arr []int
 	var str string
 	var benchmark func()
+	var n int
 
 	arr = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 	fmt.Println("Sorted Array:", arr)
@@ -192,5 +229,21 @@ func main() {
 	fmt.Println("\nPalindrome String")
 	benchmark = elapsed("Palindrome String")
 	fmt.Println(str+": ", isPalindrome(str))
+	benchmark()
+
+	n = 15
+	fmt.Println("\nFibonacci")
+	benchmark = elapsed("Fibonacci")
+	fmt.Println("Fibonacci of " + strconv.Itoa(n) + ": " + strconv.Itoa(fibonacci(n)))
+	benchmark()
+
+	fmt.Println("\nRecursive Fibonacci")
+	benchmark = elapsed("Recursive Fibonacci")
+	fmt.Println("Fibonacci of " + strconv.Itoa(n) + ": " + strconv.Itoa(fibonacciRec(n)))
+	benchmark()
+
+	fmt.Println("\nMemoized Fibonacci")
+	benchmark = elapsed("Memoized Fibonacci")
+	fmt.Println("Fibonacci of " + strconv.Itoa(n) + ": " + strconv.Itoa(fibonacciMemo(n)))
 	benchmark()
 }
